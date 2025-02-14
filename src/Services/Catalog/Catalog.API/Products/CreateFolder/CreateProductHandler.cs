@@ -1,8 +1,4 @@
-﻿using System.Windows.Input;
-using BuildingBlocks.CQRS;
-using Catalog.API.Models;
-
-
+﻿
 namespace Catalog.API.Products.CreateFolder
 {
     public record CreateProductCommand(string Name, List<string> Category, string Description, string ImageFile, decimal Price)
@@ -10,8 +6,8 @@ namespace Catalog.API.Products.CreateFolder
 
     public record CreateProductResult(Guid Id);
 
-
-    internal class CreateProductHandler : ICommandHandler<CreateProductCommand, CreateProductResult>
+    //The reason they are using the constructor "CreateProductHandler(IDocumentSession session)" directly in the class name is because of Primary Constructors, a feature introduced in C# 12.
+    internal class CreateProductHandler(IDocumentSession session) : ICommandHandler<CreateProductCommand, CreateProductResult>
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
@@ -27,7 +23,9 @@ namespace Catalog.API.Products.CreateFolder
 
             };
             //todo save to database
-            return new CreateProductResult(Guid.NewGuid());
+            session.Store(product);
+            await session.SaveChangesAsync(cancellationToken);
+            return new CreateProductResult(product.Id);
         }
     }
 }
