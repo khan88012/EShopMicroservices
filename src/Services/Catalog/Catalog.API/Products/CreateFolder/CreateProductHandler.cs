@@ -13,7 +13,7 @@ namespace Catalog.API.Products.CreateFolder
 
     internal class CreateProductHandler : ICommandHandler<CreateProductCommand, CreateProductResult>
     {
-        public Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
+        public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
             //business logic to create a product
 
@@ -27,8 +27,7 @@ namespace Catalog.API.Products.CreateFolder
 
             };
             //todo save to database
-
-            throw new NotImplementedException();
+            return new CreateProductResult(Guid.NewGuid());
         }
     }
 }
