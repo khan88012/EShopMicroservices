@@ -1,3 +1,5 @@
+using BuildingBlocks.Behaviors;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //add services to the container
@@ -5,6 +7,8 @@ builder.Services.AddCarter();
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    //configuring mediater pipeline for validation behavior
+    config.AddOpenBehavior(typeof(ValidationBehavior<,>));  // <,>  meaning generic
 });
 //injecting validator service
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
