@@ -2,16 +2,21 @@ using BuildingBlocks.Behaviors;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var assembly = typeof(Program).Assembly;
 //add services to the container
-builder.Services.AddCarter();
 builder.Services.AddMediatR(config =>
 {
-    config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    config.RegisterServicesFromAssembly(assembly);
     //configuring mediater pipeline for validation behavior
     config.AddOpenBehavior(typeof(ValidationBehavior<,>));  // <,>  meaning generic
 });
 //injecting validator service
-builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+builder.Services.AddValidatorsFromAssembly(assembly);
+
+
+builder.Services.AddCarter();
+
+
 builder.Services.AddMarten(opts =>
 {
     opts.Connection(builder.Configuration.GetConnectionString("Database")!);
