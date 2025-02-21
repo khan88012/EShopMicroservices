@@ -10,6 +10,7 @@ builder.Services.AddMediatR(config =>
     config.RegisterServicesFromAssembly(assembly);
     //configuring mediater pipeline for validation behavior
     config.AddOpenBehavior(typeof(ValidationBehavior<,>));  // <,>  meaning generic
+    config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
 //injecting validator service
 builder.Services.AddValidatorsFromAssembly(assembly);

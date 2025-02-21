@@ -21,12 +21,11 @@ namespace Catalog.API.Products.CreateFolder
 
         //The reason they are using the constructor "CreateProductHandler(IDocumentSession session)" directly in the class name is because of Primary Constructors, a feature introduced in C# 12.
         internal class CreateProductHandler
-            (IDocumentSession session, ILogger<CreateProductHandler> logger) 
+            (IDocumentSession session) 
             : ICommandHandler<CreateProductCommand, CreateProductResult>
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
-            logger.LogInformation("CreateProductHandler.Handle called with {@Command}", command);
 
 
             //business logic to create a product
