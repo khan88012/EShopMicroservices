@@ -1,6 +1,8 @@
 
 
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 var assembly = typeof(Program).Assembly;
@@ -23,6 +25,9 @@ builder.Services.AddMarten(opts =>
 {
     opts.Connection(builder.Configuration.GetConnectionString("Database")!);
 }).UseLightweightSessions();
+
+if (builder.Environment.IsDevelopment())
+    builder.Services.InitializeMartenWith<CatalogInitialData>();
 
 // the exception lambda handler is removed as IException is more suitable for microservices architecture hence registering it
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
